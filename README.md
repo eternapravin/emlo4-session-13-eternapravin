@@ -26,3 +26,26 @@ Session13 - Kubernetes Introduction
       - kubectl top pod
       - kubectl top node
       - kubectl get all -o yaml
+     
+ ### Step-by-step-Approach-in-Development
+  - As per the choices listed in the requirement, I had chosen to create a Minikube cluster on a t3a.medium EC2 cluster
+  - As per the requirement, Cat-Dog classifiecation model was used for this assignment
+  - Fastapi framework was used for serving at port 8000
+ #### Local testing using Docker
+   -  Built using the below command
+     
+     docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache
+     
+   - Test run using the below command
+   
+     docker run -it  -e PORT=8000 -p 8000:8000  fastapi-classifier-k8s bash
+
+ #### Deployment on minikube
+ 
+
+     
+
+ ### Observation
+
+
+ ### Results
