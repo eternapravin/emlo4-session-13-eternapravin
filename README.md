@@ -55,14 +55,20 @@ minikube addons enable metrics-server
 ![image](https://github.com/user-attachments/assets/4712e6d0-c2ea-475a-bab3-0362019f28f6)
 
 - kubectl describe pod/classifer-deployment-67687b7b4c-pl25j
-![image](https://github.com/user-attachments/assets/965727c9-cb7c-4118-85ff-28823dbbf60b)
-![image](https://github.com/user-attachments/assets/8e31d225-f2ff-42ec-ad13-52df592c859c)
+  ![image](https://github.com/user-attachments/assets/965727c9-cb7c-4118-85ff-28823dbbf60b)
+  ![image](https://github.com/user-attachments/assets/8e31d225-f2ff-42ec-ad13-52df592c859c)
+
+- kubectl describe ingress/classifier-ingress
+![image](https://github.com/user-attachments/assets/36393e5b-a8a6-459b-bd76-b6150e28166c)
+
 
 - kubectl top pod
-![image](https://github.com/user-attachments/assets/2833c068-661e-484d-a5e7-086197459d55)
+ 
+  ![image](https://github.com/user-attachments/assets/2833c068-661e-484d-a5e7-086197459d55)
 
 - kubectl top node
-![image](https://github.com/user-attachments/assets/4bc006e8-48f5-49a1-bf89-b66dba99b5c8)
+ 
+  ![image](https://github.com/user-attachments/assets/4bc006e8-48f5-49a1-bf89-b66dba99b5c8)
 
 - kubectl get all -o yaml
 ```yaml  
