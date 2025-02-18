@@ -37,10 +37,14 @@ Session13 - Kubernetes Introduction
      docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache
      
    - Test run using the below command
-   
+
      docker run -it  -e PORT=8000 -p 8000:8000  fastapi-classifier-k8s bash
 
  #### Deployment on minikube
+   - Kubectl for Minikube is run with the command minikube kubectl -- but we can create an alias to just use kubectl by    
+
+     alias kubectl="minikube kubectl --"
+ 
  
 
      
