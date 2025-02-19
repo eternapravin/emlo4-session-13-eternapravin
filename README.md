@@ -77,6 +77,11 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
                 targetPort: 8000
                 nodePort: 30000
      ```
+     
+     - First configure your shell to use Minikube's internal Docker daemon instead of your system's Docker daemon, build the image inside the minikube environment and then finally unset the minikune docker variable:   
+     ` eval $(minikube docker-env) `
+     ` docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache `
+     ` eval $(minikube docker-env -u) `
 
    - To modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
     kubectl expose service classifier-service --type=NodePort --port=8000
@@ -85,10 +90,6 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
  
     ` kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0 `
 
-
-
- 
- 
 ### Results
 - Pre-requisites for top commands:
 
