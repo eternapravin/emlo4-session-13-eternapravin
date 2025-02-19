@@ -37,13 +37,56 @@ Session13 - Kubernetes Introduction
      docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache
      
    - Test run using the below command
-
-     docker run -it  -e PORT=8000 -p 8000:8000  fastapi-classifier-k8s bash
+     
+     ` docker run -it  -e PORT=8000 -p 8000:8000  fastapi-classifier-k8s bash `
 
  #### Deployment on minikube
    - Kubectl for Minikube is run with the command minikube kubectl -- but we can create an alias to just use kubectl by    
 
-     alias kubectl="minikube kubectl --"
+     ` alias kubectl="minikube kubectl --" `
+
+   - This assignment I have used Minikube instead of EKS and so it is not a straight forward task and needs some additional configuration, for exposing minikube externally, Minikube should be started with the following flags, this tells the API server to bind to 15.216.172.50 (EC2 public IP) and also instructs Minikube to listen on all network interfaces intead of just local host(127.0.0.1) alone and allows external access for minikube API server, this is limited only to Minikube API server and does not expose the services running inside minikube cluster.
+     
+   ` minikube start  --apiserver-ips=15.216.172.50   --listen-address=0.0.0.0 `
+
+   - The following changes needed in the classifier-service.yaml file, to enable Nodeport, if we dont do this step, the TYPE of the service will remain a Cluster IP, the clusterIP can be used only locally inside the Minikube cluster, but to expose this to a Public URL, the TYPE of the service need to be changed to Nodeport
+
+     ` type= Nodeport `
+     
+     ` nodePort =30000 `
+
+The modification of TYPE of the service to ` NodePort ` can be verified by running the command ` kubectl get svc -o wide `
+
+  ![image](https://github.com/user-attachments/assets/e4d9cf1b-638d-4ce0-9539-3a3113a1cb6f)
+     
+     - Reference of Yaml file with modifications need is as below:
+     ```yaml
+      apiVersion: v1
+      kind: Service
+      metadata:
+          name: classifier-service
+          annotations:
+              nginx.ingress.kubernetes.io/rewrite-target: /$1
+      spec:
+          type: NodePort
+          selector:
+              app: classifier
+          ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 8000
+                nodePort: 30000
+     ```
+
+   - To modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
+    kubectl expose service classifier-service --type=NodePort --port=8000
+
+   - To allow external clients (not just localhost) to access the forwarded port, Without this flag ` --address=0.0.0.0 ` ,the port forwarding only binds to 127.0.0.1 (localhost)
+ 
+    ` kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0 `
+
+
+
  
  
 ### Results
@@ -504,11 +547,13 @@ kind: List
 metadata:
   resourceVersion: ""
 ```
+- Inference window and sample results on EC2 instance
+
+ ![image](https://github.com/user-attachments/assets/0523c446-0c20-45e7-bbca-220ee6678e42)
+
+![image](https://github.com/user-attachments/assets/a82848fb-c7dc-45da-b99a-aa6c95117d2f)
 
 
-     
 
  ### Observation
 
-
- ### Results
