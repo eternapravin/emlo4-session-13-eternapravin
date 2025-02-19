@@ -60,7 +60,7 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
   ![image](https://github.com/user-attachments/assets/e4d9cf1b-638d-4ce0-9539-3a3113a1cb6f)
      
      - Reference of Yaml file with modifications need is as below:
-     ```yaml
+
       apiVersion: v1
       kind: Service
       metadata:
@@ -76,17 +76,20 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
                 port: 80
                 targetPort: 8000
                 nodePort: 30000
-     ```
-     
-     - First configure your shell to use Minikube's internal Docker daemon instead of your system's Docker daemon, build the image inside the minikube environment and then finally unset the minikune docker variable:   
+
+   - First configure your shell to use Minikube's internal Docker daemon instead of your system's Docker daemon, build the image inside the minikube environment and then finally unset the minikune docker variable:  
+    
      ` eval $(minikube docker-env) `
+     
      ` docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache `
+     
      ` eval $(minikube docker-env -u) `
+     
+    - To modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
+    
+    ` kubectl expose service classifier-service --type=NodePort --port=8000 `
 
-   - To modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
-    kubectl expose service classifier-service --type=NodePort --port=8000
-
-   - To allow external clients (not just localhost) to access the forwarded port, Without this flag ` --address=0.0.0.0 ` ,the port forwarding only binds to 127.0.0.1 (localhost)
+   - To allow external clients (not just localhost) to access the forwarded port use the following command, Without this flag ` --address=0.0.0.0 ` ,the port forwarding only binds to 127.0.0.1 (localhost)
  
     ` kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0 `
 
