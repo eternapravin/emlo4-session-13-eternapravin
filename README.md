@@ -31,6 +31,11 @@ Session13 - Kubernetes Introduction
   - As per the choices listed in the requirement, I had chosen to create a Minikube cluster on a t3a.medium EC2 cluster
   - As per the requirement, Cat-Dog classifiecation model was used for this assignment
   - Fastapi framework was used for serving at port 8000
+
+ #### EC2 side configuration to be done
+   - Go to the Ec2 instance, click on the security tab of the insance and select the "security group" and clock on "edit inbound rules" and add the rules as per given below:
+     ![image](https://github.com/user-attachments/assets/8e315138-e22f-4be1-9807-c323bef606b2)
+
  #### Local testing using Docker
    -  Built using the below command
      
@@ -79,34 +84,30 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
 
    - First configure your shell to use Minikube's internal Docker daemon instead of your system's Docker daemon, build the image inside the minikube environment and then finally unset the minikune docker variable:  
     
-     ` eval $(minikube docker-env) `
-     
-     ` docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache `
-     
-     ` eval $(minikube docker-env -u) `
-    - Deploy the configurations as per the yaml file as below:
-     
-     `  kubectl apply -f . `
-
-    - Verification of running of pods, services and ingress can be done by the following command
+       `eval $(minikube docker-env)`
+       
+       `docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache`
+       
+       `eval $(minikube docker-env -u)`
     
-     `  kubectl get all `
+    - Deploy the configuration of kubernetes resources based on the yaml files as below: 
+       `kubectl apply -f .`
+     - Verification of running of pods, services and ingress can be done by the following command
+       `kubectl get all`
 
-    - Once it is confirmed all the pods and services are running fine, modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
-    
-    ` kubectl expose service classifier-service --type=NodePort --port=8000 ` 
+     - Once it is confirmed all the pods and services are running fine, modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
 
+       `kubectl expose service classifier-service --type=NodePort --port=8000`
+      
    -  Open the service through a default web browser
-
-     ` minikube service classifier-service `
-
+     
+      `minikube service classifier-service` 
    - Open one more terminal and do the tunneling through
      
-      ` minikube tunnel `
-     
-   - To allow external clients (not just localhost) to access the forwarded port use the following command, Without this flag ` --address=0.0.0.0 ` ,the port forwarding only binds to 127.0.0.1 (localhost)
- 
-    ` kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0 `
+       `minikube tunnel` 
+   - To allow external clients (not just localhost) to access the forwarded port use the following command, Without this flag ` --address=0.0.0.0 `,the port forwarding only binds to 127.0.0.1 (localhost)
+
+`kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0`
 
 ### Results
 - Pre-requisites for top commands:
