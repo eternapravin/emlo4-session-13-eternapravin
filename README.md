@@ -84,11 +84,26 @@ The modification of TYPE of the service to ` NodePort ` can be verified by runni
      ` docker build -t fastapi-classifier-k8s -f ./Dockerfile . --no-cache `
      
      ` eval $(minikube docker-env -u) `
+    - Deploy the configurations as per the yaml file as below:
      
-    - To modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
-    
-    ` kubectl expose service classifier-service --type=NodePort --port=8000 `
+     `  kubectl apply -f . `
 
+    - Verification of running of pods, services and ingress can be done by the following command
+    
+     `  kubectl get all `
+
+    - Once it is confirmed all the pods and services are running fine, modify the exposure settings of the classifier-service, Changes the service type to NodePort, which makes it accessible externally on a randomly assigned port between 30000-32767 on the Minikube node, Specifies the new port for the service inside the cluster but does not change the targetPort inside the pods.
+    
+    ` kubectl expose service classifier-service --type=NodePort --port=8000 ` 
+
+   -  Open the service through a default web browser
+
+     ` minikube service classifier-service `
+
+   - Open one more terminal and do the tunneling through
+     
+      ` minikube tunnel `
+     
    - To allow external clients (not just localhost) to access the forwarded port use the following command, Without this flag ` --address=0.0.0.0 ` ,the port forwarding only binds to 127.0.0.1 (localhost)
  
     ` kubectl port-forward service/classifier-service 8000:80 --address=0.0.0.0 `
