@@ -575,4 +575,5 @@ metadata:
 
 
  ### Observation
+ - Exposing Minikube to ecternal hosts like EC2 instance rather than on the local machine was not an easy task, it required lot of trial and error debugging but it was worth the effort as this would reduce the usage and cost of managed services considerably but really need to delven in to the details of what are the other challenges that could crop-up when working with storage medium and multinode clusters.
 
