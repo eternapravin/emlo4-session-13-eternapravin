@@ -1,0 +1,47 @@
+Name:             classifer-deployment-67687b7b4c-tfrvt
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Tue, 18 Feb 2025 12:50:31 +0000
+Labels:           app=classifier
+                  pod-template-hash=67687b7b4c
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.3
+IPs:
+  IP:           10.244.0.3
+Controlled By:  ReplicaSet/classifer-deployment-67687b7b4c
+Containers:
+  classifier:
+    Container ID:   docker://c09a8207b80afeb6ff8ce110e1c9c6ce86b09b583ad7bd76cc8526d9c07cd25b
+    Image:          fastapi-classifier-k8s:latest
+    Image ID:       docker://sha256:b71e57c8dc7da45b39f4d4499684d65952cfb15c9ca61649ea797802b86ee5c9
+    Port:           8000/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Tue, 18 Feb 2025 12:50:33 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-m89dc (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-m89dc:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
